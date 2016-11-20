@@ -46,16 +46,16 @@ run:
   # TODO: move to base image (anacron can not be fired up using rc.d)
   - exec: rm -f /etc/cron.d/anacron
   - file:
-     path: /etc/cron.d/anacron
-     contents: |
+      path: /etc/cron.d/anacron
+      contents: |
         SHELL=/bin/sh
         PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
         30 7    * * *   root	/usr/sbin/anacron -s >/dev/null
   - file:
-     path: /etc/runit/1.d/copy-env
-     chmod: "+x"
-     contents: |
+      path: /etc/runit/1.d/copy-env
+      chmod: "+x"
+      contents: |
         #!/bin/bash
         env > ~/boot_env
         conf=/var/www/discourse/config/discourse.conf
@@ -63,28 +63,28 @@ run:
         # find DISCOURSE_ env vars, strip the leader, lowercase the key
         /usr/local/bin/ruby -e 'ENV.each{|k,v| puts "#{$1.downcase} = #{v}" if k =~ /^DISCOURSE_(.*)/}' > $conf
   - file:
-     path: /etc/runit/1.d/00-fix-log-permissions
-     chmod: "+x"
-     contents: |
-       #!/bin/bash
-       mkdir -p /var/log/nginx
-       chown -R www-data:www-data /var/log/nginx
-       chown www-data:www-data /var/log/nginx
-       chown -f syslog:adm /var/log/syslog*
-       chown -f syslog:adm /var/log/auth.log*
-       chown -f syslog:adm /var/log/kern.log*
+      path: /etc/runit/1.d/00-fix-log-permissions
+      chmod: "+x"
+      contents: |
+        #!/bin/bash
+        mkdir -p /var/log/nginx
+        chown -R www-data:www-data /var/log/nginx
+        chown www-data:www-data /var/log/nginx
+        chown -f syslog:adm /var/log/syslog*
+        chown -f syslog:adm /var/log/auth.log*
+        chown -f syslog:adm /var/log/kern.log*
 
   - file:
-     path: /etc/runit/1.d/enable-brotli
-     chmod: "+x"
-     contents: |
+      path: /etc/runit/1.d/enable-brotli
+      chmod: "+x"
+      contents: |
         #!/bin/bash
         [ ! -z "$COMPRESS_BROTLI" ] && sed -i "s/. brotli/  brotli/" /etc/nginx/conf.d/discourse.conf || sed -i "s/. brotli/# brotli/" /etc/nginx/conf.d/discourse.conf
 
   - file:
-     path: /etc/service/unicorn/run
-     chmod: "+x"
-     contents: |
+      path: /etc/service/unicorn/run
+      chmod: "+x"
+      contents: |
         #!/bin/bash
         exec 2>&1
         # redis
@@ -94,26 +94,26 @@ run:
         LD_PRELOAD=/usr/lib/libjemalloc.so.1 HOME=/home/discourse USER=discourse exec chpst -u discourse:www-data -U discourse:www-data bundle exec config/unicorn_launcher -E production -c config/unicorn.conf.rb
 
   - file:
-     path: /etc/service/nginx/run
-     chmod: "+x"
-     contents: |
+      path: /etc/service/nginx/run
+      chmod: "+x"
+      contents: |
         #!/bin/sh
         exec 2>&1
         exec /usr/sbin/nginx
 
   - file:
-     path: /etc/runit/3.d/01-nginx
-     chmod: "+x"
-     contents: |
-       #!/bin/bash
-       sv stop nginx
+      path: /etc/runit/3.d/01-nginx
+      chmod: "+x"
+      contents: |
+        #!/bin/bash
+        sv stop nginx
 
   - file:
-     path: /etc/runit/3.d/02-unicorn
-     chmod: "+x"
-     contents: |
-       #!/bin/bash
-       sv stop unicorn
+      path: /etc/runit/3.d/02-unicorn
+      chmod: "+x"
+      contents: |
+        #!/bin/bash
+        sv stop unicorn
 
   - exec:
       cd: $home
@@ -184,44 +184,44 @@ run:
         - su discourse -c 'bundle exec rake assets:precompile'
 
   - file:
-     path: /usr/local/bin/discourse
-     chmod: +x
-     contents: |
-       #!/bin/bash
-       (cd /var/www/discourse && RAILS_ENV=production sudo -H -E -u discourse bundle exec script/discourse "$@")
+      path: /usr/local/bin/discourse
+      chmod: +x
+      contents: |
+        #!/bin/bash
+        (cd /var/www/discourse && RAILS_ENV=production sudo -H -E -u discourse bundle exec script/discourse "$@")
 
   - file:
-     path: /usr/local/bin/rails
-     chmod: +x
-     contents: |
-       #!/bin/bash
-       # If they requested a console, load pry instead
-       if [ "$*" == "c" -o "$*" == "console" ]
-       then
-        (cd /var/www/discourse && RAILS_ENV=production sudo -H -E -u discourse bundle exec pry -r ./config/environment)
-       else
-        (cd /var/www/discourse && RAILS_ENV=production sudo -H -E -u discourse bundle exec script/rails "$@")
-       fi
+      path: /usr/local/bin/rails
+      chmod: +x
+      contents: |
+        #!/bin/bash
+        # If they requested a console, load pry instead
+        if [ "$*" == "c" -o "$*" == "console" ]
+        then
+         (cd /var/www/discourse && RAILS_ENV=production sudo -H -E -u discourse bundle exec pry -r ./config/environment)
+        else
+         (cd /var/www/discourse && RAILS_ENV=production sudo -H -E -u discourse bundle exec script/rails "$@")
+        fi
 
   - file:
-     path: /usr/local/bin/rake
-     chmod: +x
-     contents: |
-       #!/bin/bash
-       (cd /var/www/discourse && RAILS_ENV=production sudo -H -E -u discourse bundle exec bin/rake "$@")
+      path: /usr/local/bin/rake
+      chmod: +x
+      contents: |
+        #!/bin/bash
+        (cd /var/www/discourse && RAILS_ENV=production sudo -H -E -u discourse bundle exec bin/rake "$@")
 
   - file:
-     path: /etc/update-motd.d/10-web
-     chmod: +x
-     contents: |
-       #!/bin/bash
-       echo
-       echo Use: rails, rake or discourse to execute commands in production
-       echo
+      path: /etc/update-motd.d/10-web
+      chmod: +x
+      contents: |
+        #!/bin/bash
+        echo
+        echo Use: rails, rake or discourse to execute commands in production
+        echo
 
   - file:
-     path: /etc/logrotate.d/rails
-     contents: |
+      path: /etc/logrotate.d/rails
+      contents: |
         /shared/log/rails/*.log
         {
                 rotate 14
@@ -237,8 +237,8 @@ run:
         }
 
   - file:
-     path: /etc/logrotate.d/nginx
-     contents: |
+      path: /etc/logrotate.d/nginx
+      contents: |
         /var/log/nginx/*.log {
           daily
           missingok
@@ -288,7 +288,7 @@ run:
 
   # change login directory to Discourse home
   - file:
-     path: /root/.bash_profile
-     chmod: 644
-     contents: |
+      path: /root/.bash_profile
+      chmod: 644
+      contents: |
         cd $home

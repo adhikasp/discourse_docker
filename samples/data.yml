@@ -29,11 +29,11 @@ env:
 
 volumes:
   - volume:
-        host: /var/discourse/shared/data
-        guest: /shared
+      host: /var/discourse/shared/data
+      guest: /shared
   - volume:
-        host: /var/discourse/shared/data/log/var-log
-        guest: /var/log
+      host: /var/discourse/shared/data/log/var-log
+      guest: /var/log
 
 # TODO: SOME_SECRET to a password for the discourse user
 hooks:

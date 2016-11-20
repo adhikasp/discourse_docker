@@ -1,18 +1,18 @@
 run:
   - file:
-     path: /etc/service/redis/run
-     chmod: "+x"
-     contents: |
+      path: /etc/service/redis/run
+      chmod: "+x"
+      contents: |
         #!/bin/sh
         exec 2>&1
         exec chpst -u redis -U redis /usr/bin/redis-server /etc/redis/redis.conf
 
   - file:
-     path: /etc/runit/3.d/10-redis
-     chmod: "+x"
-     contents: |
-       #!/bin/bash
-       sv stop redis
+      path: /etc/runit/3.d/10-redis
+      chmod: "+x"
+      contents: |
+        #!/bin/bash
+        sv stop redis
 
   - replace:
       filename: "/etc/redis/redis.conf"
@@ -61,6 +61,6 @@ hooks:
         cmd: exec chpst -u redis -U redis /usr/bin/redis-server /etc/redis/redis.conf
   after_code:
     - replace:
-       filename: /etc/service/unicorn/run
-       from: "# redis"
-       to: sv start redis || exit 1
+        filename: /etc/service/unicorn/run
+        from: "# redis"
+        to: sv start redis || exit 1

@@ -9,8 +9,8 @@ env:
 
 volumes:
   - volume:
-        host: /var/discourse/shared/redis
-        guest: /shared
+      host: /var/discourse/shared/redis
+      guest: /shared
   - volume:
-        host: /var/discourse/shared/redis/log/var-log
-        guest: /var/log
+      host: /var/discourse/shared/redis/log/var-log
+      guest: /var/log

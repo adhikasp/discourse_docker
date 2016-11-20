@@ -1,9 +1,9 @@
 hooks:
   before_code:
     - replace:
-       filename: /etc/service/unicorn/run
-       from: "# postgres"
-       to: sv start postgres || exit 1
+        filename: /etc/service/unicorn/run
+        from: "# postgres"
+        to: sv start postgres || exit 1
 
 run:
   - exec: mkdir -p /shared/postgres_run
@@ -13,9 +13,9 @@ run:
   - exec: ln -s /shared/postgres_run /var/run/postgresql
   - exec: socat /dev/null UNIX-CONNECT:/shared/postgres_run/.s.PGSQL.5432 || exit 0 && echo postgres already running stop container ; exit 1
   - file:
-     path: /etc/service/postgres/run
-     chmod: "+x"
-     contents: |
+      path: /etc/service/postgres/run
+      chmod: "+x"
+      contents: |
         #!/bin/sh
         exec 2>&1
         exec sudo -u postgres /usr/lib/postgresql/9.2/bin/postmaster -D /etc/postgresql/9.2/main

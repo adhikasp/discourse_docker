@@ -16,19 +16,19 @@ run:
 
 
   - file:
-     path: /etc/service/sshd/run
-     chmod: "+x"
-     contents: |
+      path: /etc/service/sshd/run
+      chmod: "+x"
+      contents: |
         #!/bin/bash
         exec 2>&1
         exec /usr/sbin/sshd -D -e
 
   - file:
-     path: /etc/runit/3.d/99-ssh
-     chmod: "+x"
-     contents: |
-       #!/bin/bash
-       sv stop sshd
+      path: /etc/runit/3.d/99-ssh
+      chmod: "+x"
+      contents: |
+        #!/bin/bash
+        sv stop sshd
 
   - exec:
       hook: sshd
@@ -42,9 +42,9 @@ run:
         - rm /etc/update-motd.d/10-help-text
         - rm /etc/legal
   - file:
-     path: /etc/update-motd.d/00-discourse
-     chmod: +x
-     contents: |
+      path: /etc/update-motd.d/00-discourse
+      chmod: +x
+      contents: |
         #!/bin/sh
         echo
         echo Welcome to Discourse Docker

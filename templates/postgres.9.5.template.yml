@@ -15,9 +15,9 @@ params:
 hooks:
   before_code:
     - replace:
-       filename: /etc/service/unicorn/run
-       from: "# postgres"
-       to: sv start postgres || exit 1
+        filename: /etc/service/unicorn/run
+        from: "# postgres"
+        to: sv start postgres || exit 1
 
 run:
   - exec: mkdir -p /shared/postgres_run
@@ -31,20 +31,20 @@ run:
   - exec: mkdir -p /shared/postgres_run/9.5-main.pg_stat_tmp
   - exec: chown postgres:postgres /shared/postgres_run/9.5-main.pg_stat_tmp
   - file:
-     path: /etc/service/postgres/run
-     chmod: "+x"
-     contents: |
+      path: /etc/service/postgres/run
+      chmod: "+x"
+      contents: |
         #!/bin/sh
         exec 2>&1
         echo -1000 >/proc/self/oom_score_adj
         HOME=/var/lib/postgresql USER=postgres exec chpst -u postgres:postgres:ssl-cert -U postgres:postgres:ssl-cert /usr/lib/postgresql/9.5/bin/postmaster -D /etc/postgresql/9.5/main
 
   - file:
-     path: /etc/runit/3.d/99-postgres
-     chmod: "+x"
-     contents: |
-       #!/bin/bash
-       sv stop postgres
+      path: /etc/runit/3.d/99-postgres
+      chmod: "+x"
+      contents: |
+        #!/bin/bash
+        sv stop postgres
 
   - exec:
       cmd:
@@ -153,10 +153,10 @@ run:
       raise_on_fail: false
 
   - file:
-     path: /var/lib/postgresql/take-database-backup
-     chown: postgres:postgres
-     chmod: "+x"
-     contents: |
+      path: /var/lib/postgresql/take-database-backup
+      chown: postgres:postgres
+      chmod: "+x"
+      contents: |
         #!/bin/bash
         ID=db-$(date +%F_%T)
         FILENAME=/shared/postgres_backup/$ID.tar.gz
@@ -164,8 +164,8 @@ run:
         echo $FILENAME
 
   - file:
-     path: /var/spool/cron/crontabs/postgres
-     contents: |
+      path: /var/spool/cron/crontabs/postgres
+      contents: |
         # m h  dom mon dow   command
         #MAILTO=?
         #0 */4 * * * /var/lib/postgresql/take-database-backup
