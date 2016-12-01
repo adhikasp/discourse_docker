@@ -12,22 +12,17 @@ The build process will tag the images with the version number, but not with "lat
 > SQUASH=NO make all
 > ```
 
-
-
 ## More about the images
 
 See both `Makefile` and the respective `Dockerfile`s for details on _how_ all of this happens.
-
 
 ### base ([discourse/base](https://hub.docker.com/r/discourse/base/))
 
 All of the dependencies for running Discourse.  This includes runit, postgres, nginx, ruby, imagemagick, etc.  It also includes the creation of the "discourse" user and `/var/www` directory.
 
-
 ### discourse ([discourse/discourse](https://hub.docker.com/r/discourse/discourse/))
 
 Builds on the base image and adds the current (as of image build time) version of Discourse, cloned from GitHub, and also the bundled gems.
-
 
 ### discourse_dev ([discourse/discourse_dev](https://hub.docker.com/r/discourse/discourse_dev/))
 
@@ -35,16 +30,13 @@ Adds redis and postgres just like the "standalone" template for Discourse in ord
 
 Note that the discourse user is granted "sudo" permission without asking for a password in the discourse_dev image.  This is to facilitate the command-line Docker tools in discourse proper that run commands as the discourse user.
 
-
 ### discourse_test ([discourse/discourse_test](https://hub.docker.com/r/discourse/discourse_test/))
 
 Builds on the discourse image and adds testing tools and a default testing entrypoint.
 
-
 ### discourse_bench ([discourse/discourse_bench](https://hub.docker.com/r/discourse/discourse_bench/))
 
 Builds on the discourse_test image and adds benchmark testing.
-
 
 ### discourse_fast_switch ([discourse/discourse_fast_switch](https://hub.docker.com/r/discourse/discourse_fast_switch/))
 

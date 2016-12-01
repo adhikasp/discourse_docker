@@ -10,7 +10,7 @@
 
 The simplest way to get started is via the **standalone** template, which can be installed in 30 minutes or less. For detailed install instructions, see
 
-https://github.com/discourse/discourse/blob/master/docs/INSTALL-cloud.md
+<https://github.com/discourse/discourse/blob/master/docs/INSTALL-cloud.md>
 
 ### Directory Structure
 
@@ -38,7 +38,7 @@ Placeholder spot for shared volumes with various Discourse containers. You may e
 
 Dockerfiles for Discourse; see [the README](image/README.md) for further details.
 
-The Docker repository will always contain the latest built version at: https://hub.docker.com/r/discourse/discourse/, you should not need to build the base image.
+The Docker repository will always contain the latest built version at: <https://hub.docker.com/r/discourse/discourse/>, you should not need to build the base image.
 
 ### Launcher
 
@@ -84,7 +84,6 @@ expose:
 
 Expose port 22 inside the container on port 2222 on ALL local host interfaces. In order to bind to only one interface, you may specify the host's IP address as `([<host_interface>:[host_port]])|(<host_port>):<container_port>[/udp]` as defined in the [docker port binding documentation](http://docs.docker.com/userguide/dockerlinks/)
 
-
 #### volumes:
 
 ```
@@ -92,12 +91,12 @@ volumes:
   - volume:
       host: /var/discourse/shared
       guest: /shared
-
 ```
 
 Expose a directory inside the host to the container.
 
 #### links:
+
 ```
 links:
   - link:
@@ -112,10 +111,10 @@ to the options when running the container.
 
 The Docker setup gives you multiple upgrade options:
 
-1. Use the front end at http://yoursite.com/admin/upgrade to upgrade an already running image.
+1. Use the front end at <http://yoursite.com/admin/upgrade> to upgrade an already running image.
 
 2. Create a new base image manually by running:
-  - `./launcher rebuild my_image`
+3. `./launcher rebuild my_image`
 
 ### Single Container vs. Multiple Container
 
@@ -130,7 +129,7 @@ The multiple container configuration setup is far more flexible and robust, howe
 
 If you want a multiple container setup, see the `data.yml` and `web_only.yml` templates in the samples directory. To ease this process, `launcher` will inject an env var called `DISCOURSE_HOST_IP` which will be available inside the image.
 
-WARNING: In a multiple container configuration, *make sure* you setup iptables or some other firewall to protect various ports (for postgres/redis).
+WARNING: In a multiple container configuration, _make sure_ you setup iptables or some other firewall to protect various ports (for postgres/redis).
 On Ubuntu, install the `ufw` or `iptables-persistent` package to manage firewall rules.
 
 ### Email
@@ -163,7 +162,6 @@ host do not match the IDs in the guest, permissions will mismatch. On clean
 installs you can ensure they are in sync by looking at `/etc/passwd` and
 `/etc/group`, the Discourse account will have UID 1000.
 
-
 ### Advanced topics
 
 - [Setting up SSL with Discourse Docker](https://meta.discourse.org/t/allowing-ssl-for-your-discourse-docker-setup/13847)
@@ -179,7 +177,9 @@ out your changes before committing, using the magic of
 instructions](http://docs.vagrantup.com/v2/installation/index.html), and
 then run:
 
-    vagrant up
+```
+vagrant up
+```
 
 This will spawn a new Ubuntu VM, install Docker, and then await your
 instructions.  You can then SSH into the VM with `vagrant ssh`, become
@@ -187,7 +187,6 @@ instructions.  You can then SSH into the VM with `vagrant ssh`, become
 already available at `/var/discourse`, so you can just `cd /var/discourse`
 and then start running `launcher`.
 
+# License
 
-License
-===
 MIT
